@@ -10,6 +10,9 @@ import torch.nn.functional as F
 from tensorboardX import SummaryWriter
 
 
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+
 class Critic(nn.Module):
     def __init__(self):
         super(Critic, self).__init__()
@@ -44,7 +47,7 @@ class Actor(nn.Module):
         return x
 
     def select_action(self, epsilon, state):
-        state = torch.FloatTensor(state).unsqueeze(0).cuda()
+        state = torch.FloatTensor(state).unsqueeze(0).to(device)
         with torch.no_grad():
             action = self.forward(state).squeeze() + self.is_train * epsilon * self.noisy.sample()
         return 2 * np.clip(action.item(), -1, 1)
@@ -76,10 +79,10 @@ class Memory(object):
 
 
 env = gym.make('Pendulum-v0')
-actor = Actor().cuda()
-critic = Critic().cuda()
-actor_target = Actor().cuda()
-critic_target = Critic().cuda()
+actor = Actor().to(device)
+critic = Critic().to(device)
+actor_target = Actor().to(device)
+critic_target = Critic().to(device)
 
 critic_optim = torch.optim.Adam(critic.parameters(), lr=3e-5)
 actor_optim = torch.optim.Adam(actor.parameters(), lr=1e-5)
@@ -116,10 +119,10 @@ for epoch in count():
             experiences = memory_replay.sample(batch_size, False)
             batch_state, batch_next_state, batch_action, batch_reward = zip(*experiences)
 
-            batch_state = torch.FloatTensor(batch_state).cuda()
-            batch_next_state = torch.FloatTensor(batch_next_state).cuda()
-            batch_action = torch.FloatTensor(batch_action).unsqueeze(1).cuda()
-            batch_reward = torch.FloatTensor(batch_reward).unsqueeze(1).cuda()
+            batch_state = torch.FloatTensor(batch_state).to(device)
+            batch_next_state = torch.FloatTensor(batch_next_state).to(device)
+            batch_action = torch.FloatTensor(batch_action).unsqueeze(1).to(device)
+            batch_reward = torch.FloatTensor(batch_reward).unsqueeze(1).to(device)
 
             # print(batch_state.shape, batch_next_state.shape, batch_action.shape, batch_reward.shape)
 

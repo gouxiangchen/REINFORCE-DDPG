@@ -5,6 +5,9 @@ from itertools import count
 from torch.distributions import Bernoulli
 
 
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+
 class PolicyNetwork(nn.Module):
     def __init__(self):
         super(PolicyNetwork, self).__init__()
@@ -29,7 +32,7 @@ class PolicyNetwork(nn.Module):
 
 
 env = gym.make('CartPole-v0')
-policy = PolicyNetwork().cuda()
+policy = PolicyNetwork().to(device)
 gamma = 0.99
 policy.load_state_dict(torch.load('cart-policy.para'))
 
@@ -38,7 +41,7 @@ for epoch in count():
     state = env.reset()
     for time_step in range(200):
         env.render()
-        state = torch.FloatTensor(state).unsqueeze(0).cuda()
+        state = torch.FloatTensor(state).unsqueeze(0).to(device)
         action = int(policy.select_action(state))
         next_state, reward, done, _ = env.step(action)
         episode_reward += reward

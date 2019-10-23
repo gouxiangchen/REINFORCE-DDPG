@@ -6,6 +6,9 @@ from torch.distributions import Bernoulli
 import numpy as np
 
 
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+
 class PolicyNetwork(nn.Module):
     def __init__(self):
         super(PolicyNetwork, self).__init__()
@@ -30,7 +33,7 @@ class PolicyNetwork(nn.Module):
 
 
 env = gym.make('CartPole-v0')
-policy = PolicyNetwork().cuda()
+policy = PolicyNetwork().to(device)
 gamma = 0.99
 optim = torch.optim.Adam(policy.parameters(), lr=1e-4)
 
@@ -43,7 +46,7 @@ for epoch in count():
     states = []
     for time_step in range(200):
         states.append(state)
-        state = torch.FloatTensor(state).unsqueeze(0).cuda()
+        state = torch.FloatTensor(state).unsqueeze(0).to(device)
         action = int(policy.select_action(state))
         actions.append(action)
         next_state, reward, done, _ = env.step(action)
@@ -62,9 +65,9 @@ for epoch in count():
     rewards_std = np.std(rewards)
     rewards = (rewards - rewards_mean) / rewards_std
 
-    states_tensor = torch.FloatTensor(states).cuda()
-    actions_tensor = torch.FloatTensor(actions).unsqueeze(1).cuda()
-    rewards_tensor = torch.FloatTensor(rewards).unsqueeze(1).cuda()
+    states_tensor = torch.FloatTensor(states).to(device)
+    actions_tensor = torch.FloatTensor(actions).unsqueeze(1).to(device)
+    rewards_tensor = torch.FloatTensor(rewards).unsqueeze(1).to(device)
 
     # print(states_tensor.shape, actions_tensor.shape, rewards_tensor.shape)
 

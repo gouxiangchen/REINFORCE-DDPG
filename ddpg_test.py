@@ -6,6 +6,9 @@ from torch.distributions import Normal
 import numpy as np
 
 
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+
 class Actor(nn.Module):
     def __init__(self, is_train=True):
         super(Actor, self).__init__()
@@ -24,14 +27,14 @@ class Actor(nn.Module):
         return x
 
     def select_action(self, epsilon, state):
-        state = torch.FloatTensor(state).unsqueeze(0).cuda()
+        state = torch.FloatTensor(state).unsqueeze(0).to(device)
         with torch.no_grad():
             action = self.forward(state).squeeze() + self.is_train * epsilon * self.noisy.sample()
         return 2 * np.clip(action.item(), -1, 1)
 
 
 env = gym.make('Pendulum-v0')
-actor = Actor(is_train=False).cuda()
+actor = Actor(is_train=False).to(device)
 actor.load_state_dict(torch.load('ddpg-actor.para'))
 epsilon = 1
 

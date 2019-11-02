@@ -22,7 +22,9 @@ in Pendulum-v0
 ## Compare soft-update and target network update
 in pendulum-v0
 
-soft update | target network(update every 4 steps)
-:-:|:-:
-![soft update](./soft-update.png)|![target network](./target-network.png)
+soft update | target network(update every 4 steps) | 2 critic networks (introduced in [paper](https://arxiv.org/abs/1802.09477))
+:-:|:-:|:-:
+![soft update](./soft-update.png)|![target network](./target-network.png) | ![with 2 critic](./with-2-critic.png)
+
+the improvement of 2 critic networks is not clear in pendulum-v0, but it's believed that would significantly speed up training on harder tasks.
 

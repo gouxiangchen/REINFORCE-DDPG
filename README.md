@@ -19,3 +19,10 @@ in Pendulum-v0
 
 ![result](./episode_reward.png)
 
+## Compare soft-update and target network update
+in pendulum-v0
+
+soft update | target network(update every 4 steps)
+:-:|:-:
+![soft update](./soft-update.png)|![target network](./target-network.png)
+

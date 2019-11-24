@@ -147,13 +147,14 @@ for epoch in count():
             critic_optim.step()
 
             writer.add_scalar('critic loss', critic_loss.item(), learn_steps)
-
+            critic.eval()
             actor_loss = - critic(batch_state, actor(batch_state))
             # print(actor_loss.shape)
             actor_loss = actor_loss.mean()
             actor_optim.zero_grad()
             actor_loss.backward()
             actor_optim.step()
+            critic.train()
             writer.add_scalar('actor loss', actor_loss.item(), learn_steps)
 
             soft_update(actor_target, actor, tau)

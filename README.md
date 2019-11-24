@@ -1,4 +1,5 @@
 # REINFORCE-DDPG
+
 the implement of REINFORCE algorithm and DDPG algorithm in pytorch
 
 all code is in one file and easily to follow
@@ -15,16 +16,14 @@ only in CartPole-v0 environment, can not learn well in Pendulum-v0
 
 ## DDPG
 
-in Pendulum-v0
-
-![result](./episode_reward.png)
+only in Pendulum-v0 for ddpg only suit for continuous task
 
 ## Compare soft-update and target network update
+
 in pendulum-v0
 
-soft update | target network(update every 4 steps) | 2 critic networks (introduced in [paper](https://arxiv.org/abs/1802.09477))
-:-:|:-:|:-:
-![soft update](./soft-update.png)|![target network](./target-network.png) | ![with 2 critic](./with-2-critic.png)
+![](./ddpg_critic_freeze.png)
 
-the improvement of 2 critic networks is not clear in pendulum-v0, but it's believed that would significantly speed up training on harder tasks.
+`TD-3` version with 2 critic networks and soft update, `soft update` version is the one in ddpg original paper, `hard update` version is the one with the same target network update with DQN which is every C time hard update.
+
 

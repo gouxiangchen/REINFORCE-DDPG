@@ -2,9 +2,9 @@
 
 the implement of REINFORCE algorithm and DDPG algorithm in pytorch
 
-(update the implement in tensorflow v1 & v2)
+**(update the implement in tensorflow v1 & v2)**
 
-(The convergence of tf version is quite slower than pytorch version, I don't know why, maybe the default initialization methods of these are different.)
+**(The convergence of tf version is quite slower than pytorch version, I don't know why, maybe the default initialization methods of these are different.)**
 
 all code is in one file and easily to follow
 

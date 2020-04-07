@@ -2,7 +2,7 @@
 
 the implement of REINFORCE algorithm and DDPG algorithm in pytorch
 
-(update the implement in tensorflow v1)
+(update the implement in tensorflow v1 & v2)
 
 all code is in one file and easily to follow
 
